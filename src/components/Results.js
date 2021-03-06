@@ -13,6 +13,9 @@ const Results = ({ resultArr, resultKey, handleChange, expanded, classes }) => {
     resultArr.map((data, index) => (
       <div>
         <Accordion
+          style={{
+            textAlign: "center",
+          }}
           expanded={expanded === resultKey + index}
           onChange={() => handleChange(resultKey, index)}
         >
@@ -28,12 +31,24 @@ const Results = ({ resultArr, resultKey, handleChange, expanded, classes }) => {
               {data.text && data.text}
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <div>
-              <span>
-                <h4>Useful Links</h4>
-              </span>
-              <ul style={{ textDecoration: "none" }}>
+          <AccordionDetails
+            style={{
+              backgroundColor: "#f0f0f0",
+            }}
+          >
+            <div
+              style={{
+                marginLeft: "50%",
+                transform: "translateX(-50%)",
+                textAlign: "center",
+              }}
+            >
+              <h4>Read More</h4>
+              <ul
+                style={{
+                  textAlign: "left",
+                }}
+              >
                 {data.links &&
                   data.links.map((link) => (
                     <li>

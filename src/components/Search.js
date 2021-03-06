@@ -15,8 +15,9 @@ const useStyles = makeStyles((theme) => ({
 export default function SelectDate({ setData }) {
   const classes = useStyles();
   const [date, setDate] = useState({
-    day: 1,
-    month: 1,
+    dataLoading: false,
+    day: 10,
+    month: 5,
   });
 
   const handleChange = (event) => {
@@ -30,7 +31,6 @@ export default function SelectDate({ setData }) {
     let headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
     };
     return {
       method,
@@ -40,15 +40,14 @@ export default function SelectDate({ setData }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("submitting");
     try {
-      const req = await fetch(
-        "https://history.muffinlabs.com/date/" + date.day + "/" + date.month,
-        headerConfig("GET")
-      );
+      const req = await fetch("/data.json", headerConfig("GET"));
       const response = await req.json();
       setData(response);
-      console.log(response);
+      setDate({
+        ...date,
+        dataLoading: false,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -99,8 +98,18 @@ export default function SelectDate({ setData }) {
             ))}
           </Select>
         </FormControl>
-        <Button variant="outlined" type="submit" color="primary">
-          Get History
+        <Button
+          onClick={() =>
+            setDate({
+              ...date,
+              dataLoading: true,
+            })
+          }
+          variant="outlined"
+          type="submit"
+          color="primary"
+        >
+          {date.dataLoading ? "Fetching..." : "Get History"}
         </Button>
       </form>
     </div>
